@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hayat — Homoeo Clinic</title>
+<link rel="icon" type="image/png" href="assets/hayath-icon-round.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+
+  :root{
+    --ink:#0F2118;
+    --ink-soft:#1C3527;
+    --ink-softer:#274536;
+    --gold:#C6A15B;
+    --gold-light:#E7D4A6;
+    --ivory:#F6F1E6;
+    --ivory-dim:#EDE6D4;
+    --sage:#DCE3D2;
+    --white:#FFFFFF;
+    --line: rgba(198,161,91,0.35);
+    --shadow: 0 30px 60px -25px rgba(15,33,24,0.35);
+  }
+
+  *{box-sizing:border-box; margin:0; padding:0;}
+
+  html{scroll-behavior:smooth;}
+
+  body{
+    background:var(--ivory);
+    color:var(--ink);
+    font-family:'Jost', sans-serif;
+    font-weight:400;
+    line-height:1.6;
+    overflow-x:hidden;
+  }
+
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    font-weight:500;
+    color:var(--ink);
+    letter-spacing:0.2px;
+  }
+
+  a{ text-decoration:none; color:inherit; }
+  img{ max-width:100%; display:block; }
+
+  .eyebrow{
+    font-family:'Jost', sans-serif;
+    letter-spacing:0.28em;
+    text-transform:uppercase;
+    font-size:0.72rem;
+    color:var(--gold);
+    font-weight:500;
+  }
+
+  .container{
+    width:100%;
+    max-width:1180px;
+    margin:0 auto;
+    padding:0 32px;
+  }
+
+  /* ---------- Arch motif (signature element) ---------- */
+  .arch-frame{
+    border-radius: 260px 260px 8px 8px;
+    overflow:hidden;
+    position:relative;
+    border:1px solid var(--line);
+  }
+
+  .arch-divider{
+    width:100%;
+    display:block;
+    line-height:0;
+  }
+
+  /* ---------- Nav ---------- */
+  header{
+    position:fixed;
+    top:0; left:0; right:0;
+    z-index:100;
+    background:rgba(246,241,230,0.86);
+    backdrop-filter: blur(10px);
+    border-bottom:1px solid var(--line);
+    transition: background 0.3s ease;
+  }
+
+  .nav-wrap{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:18px 32px;
+    max-width:1180px;
+    margin:0 auto;
+  }
+
+  .logo{
+    font-family:'Fraunces', serif;
+    font-size:1.6rem;
+    letter-spacing:0.04em;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    gap:12px;
+  }
+  .logo span{ color:var(--gold); }
+  .logo img{
+    height:52px;
+    width:52px;
+    object-fit:contain;
+    display:block;
+    border-radius:50%;
+    background:var(--ivory);
+    box-shadow: 0 4px 14px -6px rgba(15,33,24,0.35);
+    padding:3px;
+  }
+  .logo-word{ line-height:1; }
+  .logo-word small{
+    display:block;
+    font-family:'Jost', sans-serif;
+    font-size:0.6rem;
+    letter-spacing:0.24em;
+    text-transform:uppercase;
+    color:var(--gold);
+    font-weight:500;
+    margin-top:3px;
+  }
+
+  nav ul{
+    list-style:none;
+    display:flex;
+    gap:40px;
+  }
+
+  nav a{
+    font-size:0.85rem;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    position:relative;
+    padding-bottom:4px;
+  }
+  nav a::after{
+    content:"";
+    position:absolute;
+    left:0; bottom:0;
+    width:0%; height:1px;
+    background:var(--gold);
+    transition:width 0.3s ease;
+  }
+  nav a:hover::after{ width:100%; }
+
+  .nav-cta{
+    border:1px solid var(--gold);
+    padding:10px 24px;
+    border-radius:2px;
+    font-size:0.78rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--ink);
+    transition: all 0.3s ease;
+  }
+  .nav-cta:hover{ background:var(--gold); color:var(--white); }
+
+  .nav-toggle{ display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; }
+  .nav-toggle span{ width:24px; height:1.5px; background:var(--ink); }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex;
+    align-items:center;
+    position:relative;
+    background:
+      radial-gradient(ellipse at 80% 20%, rgba(198,161,91,0.12), transparent 55%),
+      var(--ivory);
+    padding-top:112px;
+    overflow:hidden;
+  }
+
+  .hero .container{
+    display:grid;
+    grid-template-columns: 1.05fr 0.95fr;
+    gap:60px;
+    align-items:center;
+  }
+
+  .hero-leaf{
+    position:absolute;
+    right:-120px; top:-80px;
+    width:520px; height:520px;
+    opacity:0.5;
+    z-index:0;
+  }
+
+  .hero-copy{ position:relative; z-index:2; }
+
+  .hero h1{
+    font-size:clamp(2.6rem, 5vw, 4.4rem);
+    line-height:1.06;
+    margin:22px 0 26px;
+    font-weight:500;
+  }
+  .hero h1 em{
+    font-style:italic;
+    color:var(--gold);
+    font-weight:400;
+  }
+
+  .hero p.lead{
+    max-width:460px;
+    font-size:1.05rem;
+    color:var(--ink-soft);
+    margin-bottom:38px;
+  }
+
+  .btn-row{ display:flex; gap:20px; align-items:center; flex-wrap:wrap; }
+
+  .btn-primary{
+    background:var(--ink);
+    color:var(--ivory);
+    padding:16px 34px;
+    border-radius:2px;
+    font-size:0.85rem;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    transition: all 0.35s ease;
+    border:1px solid var(--ink);
+  }
+  .btn-primary:hover{ background:transparent; color:var(--ink); }
+
+  .btn-text{
+    font-size:0.85rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink);
+    border-bottom:1px solid var(--gold);
+    padding-bottom:4px;
+  }
+
+  .hero-visual{
+    position:relative;
+    z-index:1;
+  }
+
+  .hero-arch{
+    width:100%;
+    aspect-ratio: 3/4;
+    background:
+      linear-gradient(160deg, var(--ink-softer), var(--ink) 70%);
+    border-radius: 300px 300px 12px 12px;
+    position:relative;
+    box-shadow:var(--shadow);
+    display:flex;
+    align-items:flex-end;
+    justify-content:center;
+    padding-bottom:30px;
+    border: 1px solid rgba(231,212,166,0.4);
+  }
+
+  .hero-arch::before{
+    content:"";
+    position:absolute;
+    inset:14px;
+    border:1px solid rgba(231,212,166,0.35);
+    border-radius: 280px 280px 4px 4px;
+  }
+
+  .hero-arch-caption{
+    color:var(--gold-light);
+    font-size:0.72rem;
+    letter-spacing:0.3em;
+    text-transform:uppercase;
+    text-align:center;
+  }
+
+
+  .hero-illus{
+    position:absolute;
+    left:8%; right:8%; top:9%; bottom:15%;
+    width:84%; height:76%;
+    z-index:1;
+  }
+  .hero-arch-caption{ position:relative; z-index:2; }
+  .phil-visual .phil-illus{ padding:34px 30px 24px; opacity:1; }
+  @media (prefers-reduced-motion: no-preference){
+    .hero-illus{ animation: gentle-float 7s ease-in-out infinite; }
+  }
+  @keyframes gentle-float{ 0%,100%{ transform:translateY(0);} 50%{ transform:translateY(-6px);} }
+
+  .hero-stat-card{
+    position:absolute;
+    bottom:-30px; left:-30px;
+    background:var(--white);
+    border:1px solid var(--line);
+    padding:22px 26px;
+    border-radius:4px;
+    box-shadow:var(--shadow);
+    z-index:3;
+    min-width:200px;
+  }
+  .hero-stat-card .num{
+    font-family:'Fraunces', serif;
+    font-size:2rem;
+    color:var(--gold);
+    line-height:1;
+  }
+  .hero-stat-card .lab{
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+
+  /* ---------- Marquee strip ---------- */
+  .strip{
+    background:var(--ink);
+    color:var(--gold-light);
+    padding:16px 0;
+    overflow:hidden;
+    white-space:nowrap;
+  }
+  .strip-inner{
+    display:inline-block;
+    animation: scroll-left 28s linear infinite;
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.05rem;
+    letter-spacing:0.02em;
+  }
+  .strip-inner span{ margin:0 28px; color:var(--gold); font-style:normal; }
+  @keyframes scroll-left{
+    0%{ transform:translateX(0); }
+    100%{ transform:translateX(-50%); }
+  }
+
+  /* ---------- Section generic ---------- */
+  section{ padding:120px 0; position:relative; }
+  .section-head{
+    text-align:center;
+    max-width:640px;
+    margin:0 auto 70px;
+  }
+  .section-head h2{
+    font-size:clamp(2rem, 3.4vw, 2.8rem);
+    margin-top:16px;
+  }
+  .section-head p{ color:var(--ink-soft); margin-top:18px; }
+
+  /* ---------- Philosophy / About ---------- */
+  .philosophy{ background:var(--white); }
+  .phil-grid{
+    display:grid;
+    grid-template-columns: 0.85fr 1.15fr;
+    gap:70px;
+    align-items:center;
+  }
+  .phil-visual{
+    aspect-ratio:4/5;
+    background: linear-gradient(150deg, var(--sage), var(--ivory-dim));
+    border-radius: 240px 240px 10px 10px;
+    border:1px solid var(--line);
+    position:relative;
+  }
+  .phil-visual svg{ position:absolute; inset:0; width:100%; height:100%; padding:60px; opacity:0.85; }
+
+  .phil-text .eyebrow{ margin-bottom:14px; display:block; }
+  .phil-text h2{ font-size:2.2rem; margin-bottom:22px; }
+  .phil-text p{ color:var(--ink-soft); margin-bottom:18px; max-width:520px; }
+
+  .phil-list{ margin-top:30px; display:grid; gap:18px; }
+  .phil-list li{
+    list-style:none;
+    display:flex;
+    gap:16px;
+    align-items:flex-start;
+    color:var(--ink-soft);
+  }
+  .phil-list .mark{
+    color:var(--gold);
+    font-family:'Fraunces', serif;
+    font-style:italic;
+    font-size:1.1rem;
+    flex-shrink:0;
+  }
+
+  /* ---------- Doctor ---------- */
+  .doctor{ background:var(--ink); color:var(--ivory); }
+  .doctor .eyebrow{ color:var(--gold-light); }
+  .doctor .section-head p{ color:rgba(246,241,230,0.72); }
+  .doctor .section-head h2{ color:var(--ivory); }
+
+  .doctor-grid{
+    display:grid;
+    grid-template-columns: 0.8fr 1.2fr;
+    gap:70px;
+    align-items:center;
+  }
+
+  .doctor-photo{
+    aspect-ratio:3/4;
+    border-radius:260px 260px 10px 10px;
+    border:1px solid rgba(231,212,166,0.5);
+    background: linear-gradient(160deg, var(--ink-softer), #12261C 75%);
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    overflow:hidden;
+  }
+  /* PLACEHOLDER PHOTO — replace this <div class="doctor-photo"> content
+     with an <img src="your-photo.jpg" alt="Dr. Name"> to add the real photo */
+  .doctor-photo .placeholder-mark{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:14px;
+    color:var(--gold-light);
+  }
+  .doctor-photo .placeholder-mark svg{ width:74px; height:74px; opacity:0.85; }
+  .doctor-photo .placeholder-mark span{
+    font-size:0.7rem;
+    letter-spacing:0.2em;
+    text-transform:uppercase;
+    opacity:0.7;
+  }
+
+  .doctor-copy h3{
+    font-size:2rem;
+    color:var(--ivory);
+    margin-bottom:6px;
+  }
+  .doctor-copy .role{
+    color:var(--gold);
+    font-size:0.82rem;
+    letter-spacing:0.12em;
+    text-transform:uppercase;
+    margin-bottom:24px;
+    display:block;
+  }
+  .doctor-copy p{
+    color:rgba(246,241,230,0.78);
+    max-width:520px;
+    margin-bottom:20px;
+  }
+  .cred-row{
+    display:flex;
+    gap:40px;
+    margin-top:34px;
+    flex-wrap:wrap;
+  }
+  .cred-row div .num{
+    font-family:'Fraunces', serif;
+    font-size:1.8rem;
+    color:var(--gold-light);
+  }
+  .cred-row div .lab{
+    font-size:0.72rem;
+    letter-spacing:0.08em;
+    text-transform:uppercase;
+    color:rgba(246,241,230,0.6);
+    margin-top:4px;
+  }
+
+  /* ---------- Services ---------- */
+  .services{ background:var(--ivory); }
+  .services-grid{
+    display:grid;
+    grid-template-columns:repeat(3, 1fr);
+    gap:2px;
+    background:var(--line);
+    border:1px solid var(--line);
+  }
+  .service-card{
+    background:var(--white);
+    padding:46px 38px;
+    transition: background 0.35s ease;
+  }
+  .service-card:hover{ background:var(--ivory-dim); }
+  .service-card .si{
+    width:46px; height:46px;
+    margin-bottom:26px;
+  }
+  .service-card h3{ font-size:1.28rem; margin-bottom:12px; }
+  .service-card p{ color:var(--ink-soft); font-size:0.95rem; }
+
+  /* ---------- Location ---------- */
+  .location{ background:var(--white); }
+  .loc-grid{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap:0;
+    border:1px solid var(--line);
+    border-radius:6px;
+    overflow:hidden;
+  }
+  .loc-info{
+    background:var(--ink);
+    color:var(--ivory);
+    padding:60px 50px;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+  }
+  .loc-info h3{ color:var(--ivory); font-size:1.8rem; margin-bottom:22px; }
+  .loc-item{ margin-bottom:22px; }
+  .loc-item .lab{
+    font-size:0.7rem;
+    letter-spacing:0.15em;
+    text-transform:uppercase;
+    color:var(--gold);
+    margin-bottom:6px;
+  }
+  .loc-item .val{ color:rgba(246,241,230,0.85); font-size:0.98rem; overflow-wrap:anywhere; }
+
+  .map-embed{ width:100%; height:100%; min-height:480px; border:0; filter: saturate(0.85); }
+
+  /* ---------- CTA banner ---------- */
+  .cta-banner{
+    background: linear-gradient(120deg, var(--ink), var(--ink-softer));
+    padding:90px 0;
+    text-align:center;
+    color:var(--ivory);
+  }
+  .cta-banner h2{ color:var(--ivory); font-size:clamp(1.9rem,3.4vw,2.6rem); margin-bottom:18px; }
+  .cta-banner p{ color:rgba(246,241,230,0.75); max-width:520px; margin:0 auto 34px; }
+
+  /* ---------- Footer ---------- */
+  footer{ background:var(--ivory-dim); padding:60px 0 30px; }
+  .foot-grid{
+    display:grid;
+    grid-template-columns:1.4fr 0.8fr 0.8fr 1fr;
+    gap:40px;
+    padding-bottom:50px;
+    border-bottom:1px solid var(--line);
+  }
+  .foot-logo{ font-family:'Fraunces', serif; font-size:1.4rem; margin-bottom:16px; display:flex; align-items:center; gap:14px; }
+  .foot-logo span{ color:var(--gold); }
+  .foot-logo img{
+    height:64px; width:64px; object-fit:contain; border-radius:50%;
+    background:var(--ivory); box-shadow:0 4px 14px -6px rgba(15,33,24,0.35); padding:4px;
+  }
+  .foot-logo-word{ line-height:1.2; }
+  .foot-logo-word small{
+    display:block; font-family:'Jost', sans-serif; font-size:0.62rem;
+    letter-spacing:0.22em; text-transform:uppercase; color:var(--gold); font-weight:500; margin-top:4px;
+  }
+  footer p{ color:var(--ink-soft); font-size:0.92rem; max-width:280px; }
+  footer h4{ font-size:0.82rem; letter-spacing:0.1em; text-transform:uppercase; margin-bottom:18px; color:var(--ink); }
+  footer ul{ list-style:none; display:grid; gap:10px; }
+  footer ul li a{ color:var(--ink-soft); font-size:0.92rem; overflow-wrap:anywhere; }
+  footer ul li a:hover{ color:var(--gold); }
+  .foot-bottom{
+    padding-top:26px;
+    display:flex;
+    justify-content:space-between;
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    flex-wrap:wrap;
+    gap:10px;
+  }
+
+  /* ---------- Reveal animation ---------- */
+  .reveal{ opacity:0; transform:translateY(28px); transition: opacity 0.8s ease, transform 0.8s ease; }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 980px){
+    .logo img{ height:44px; width:44px; }
+    .logo{ font-size:1.3rem; }
+    nav ul{ display:none; }
+    .nav-cta{ display:none; }
+    .nav-toggle{ display:flex; }
+    .hero .container{ grid-template-columns:1fr; }
+    .hero-visual{ order:-1; max-width:340px; margin:0 auto; }
+    .hero-stat-card{ left:10px; }
+    .phil-grid, .doctor-grid, .loc-grid{ grid-template-columns:1fr; }
+    .services-grid{ grid-template-columns:1fr; }
+    .foot-grid{ grid-template-columns:1fr 1fr; }
+  }
+  @media (max-width: 560px){
+    .foot-grid{ grid-template-columns:1fr; }
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    html{ scroll-behavior:auto; }
+    .reveal{ transition:none; opacity:1; transform:none; }
+    .strip-inner{ animation:none; }
+  }
+
+  a:focus-visible, button:focus-visible{
+    outline:2px solid var(--gold);
+    outline-offset:3px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav-wrap">
+    <a href="#top" class="logo">
+      <img src="assets/hayath-icon-round.png" alt="Hayat emblem">
+      <span class="logo-word">Hayat<small>Homoeo Clinic</small></span>
+    </a>
+    <nav>
+      <ul>
+        <li><a href="#philosophy">Philosophy</a></li>
+        <li><a href="#doctor">Physician</a></li>
+        <li><a href="#services">Care</a></li>
+        <li><a href="#location">Visit</a></li>
+      </ul>
+    </nav>
+    <a href="#location" class="nav-cta">Book Consultation</a>
+    <button class="nav-toggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <svg class="hero-leaf" viewBox="0 0 500 500" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M250 40C310 120 420 150 460 250C420 350 310 380 250 460C190 380 80 350 40 250C80 150 190 120 250 40Z" stroke="#C6A15B" stroke-width="1" opacity="0.5"/>
+      <path d="M250 100C295 160 375 185 405 250C375 315 295 340 250 400C205 340 125 315 95 250C125 185 205 160 250 100Z" stroke="#C6A15B" stroke-width="0.7" opacity="0.35"/>
+    </svg>
+    <div class="container">
+      <div class="hero-copy">
+        <span class="eyebrow">Hayat Homoeo Clinic</span>
+        <h1>The gentle art<br>of restoring <em>life</em></h1>
+        <p class="lead">A quiet sanctuary for classical homeopathy — personalised care that treats the whole person, not just the symptom, in a setting built for calm.</p>
+        <div class="btn-row">
+          <a href="#location" class="btn-primary">Reserve Your Visit</a>
+          <a href="#philosophy" class="btn-text">Our Philosophy</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-arch">
+          <svg class="hero-illus" viewBox="0 0 300 350" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="150" cy="135" r="78" fill="none" stroke="#E7D4A6" stroke-width="0.7" opacity="0.28"/><circle cx="150" cy="135" r="62" fill="none" stroke="#E7D4A6" stroke-width="0.5" opacity="0.18" stroke-dasharray="2 5"/><path d="M128 318 C110 270 70 220 64 120" fill="none" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M113.5 285.5 Q128.0 280.1 124.7 257.8 Q106.9 271.6 113.5 285.5Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M113.5 285.5 L122.5 263.3" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M106.6 271.4 Q100.1 258.3 79.5 263.6 Q94.1 278.9 106.6 271.4Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M106.6 271.4 L84.9 265.1" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M99.4 256.4 Q112.3 251.8 109.8 232.0 Q93.8 243.9 99.4 256.4Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M99.4 256.4 L107.8 236.9" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M92.3 240.4 Q87.2 228.6 68.8 232.2 Q81.0 246.4 92.3 240.4Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M92.3 240.4 L73.5 233.8" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M85.4 223.1 Q97.0 220.0 96.2 202.6 Q81.4 211.8 85.4 223.1Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M85.4 223.1 L94.0 206.7" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M79.0 204.4 Q75.7 193.8 59.6 195.3 Q68.8 208.6 79.0 204.4Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M79.0 204.4 L63.5 197.1" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M73.4 184.0 Q83.5 182.6 84.7 167.7 Q71.2 174.1 73.4 184.0Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M73.4 184.0 L82.4 171.0" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M68.8 161.8 Q67.1 152.6 53.5 152.1 Q59.8 164.2 68.8 161.8Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M68.8 161.8 L56.6 154.0" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M65.4 137.5 Q73.9 137.4 76.5 125.3 Q64.7 129.0 65.4 137.5Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M65.4 137.5 L74.3 127.7" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M64.0 120.0 Q70.1 113.7 62.9 103.0 Q57.2 114.5 64.0 120.0Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M64.0 120.0 L63.1 106.4" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M172 318 C190 270 232 225 238 128" fill="none" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M186.7 286.2 Q199.7 294.6 215.7 278.7 Q194.0 272.6 186.7 286.2Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M186.7 286.2 L209.9 280.2" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M193.9 272.6 Q200.5 259.6 184.1 246.1 Q180.4 267.0 193.9 272.6Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M193.9 272.6 L186.1 251.4" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M201.3 258.3 Q212.9 265.6 226.9 251.4 Q207.6 246.2 201.3 258.3Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M201.3 258.3 L221.8 252.8" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M208.7 243.1 Q213.9 231.4 198.9 220.3 Q196.6 238.9 208.7 243.1Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M208.7 243.1 L200.9 224.9" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M215.8 226.8 Q226.5 232.3 237.6 218.8 Q220.4 215.7 215.8 226.8Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M215.8 226.8 L233.2 220.4" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M222.5 209.0 Q225.9 198.5 211.9 190.3 Q211.7 206.5 222.5 209.0Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M222.5 209.0 L214.0 194.1" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M228.3 189.6 Q237.9 193.1 245.8 180.5 Q231.0 179.7 228.3 189.6Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M228.3 189.6 L242.3 182.3" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M233.1 168.3 Q234.6 159.1 222.0 154.0 Q223.8 167.5 233.1 168.3Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M233.1 168.3 L224.2 156.9" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M236.5 144.9 Q244.9 146.6 249.8 135.3 Q237.5 136.5 236.5 144.9Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M236.5 144.9 L247.2 137.2" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M238.0 128.0 Q244.8 122.5 239.1 111.0 Q231.9 121.6 238.0 128.0Z" fill="rgba(198,161,91,0.06)" stroke="#C6A15B" stroke-width="1" opacity="0.9"/><path d="M238.0 128.0 L238.9 114.4" stroke="#C6A15B" stroke-width="0.6" opacity="0.63"/><path d="M140 318 C132 260 112 210 108 175" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M133.3 281.0 Q144.1 279.6 145.5 263.8 Q131.0 270.3 133.3 281.0Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M133.3 281.0 L143.1 267.2" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M126.4 252.7 Q123.9 243.4 109.8 244.1 Q117.3 256.0 126.4 252.7Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M126.4 252.7 L113.1 245.8" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M119.4 226.5 Q127.8 225.1 128.3 212.8 Q117.3 218.3 119.4 226.5Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M119.4 226.5 L126.5 215.5" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M113.3 202.7 Q111.5 195.7 101.0 196.0 Q106.4 205.0 113.3 202.7Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M113.3 202.7 L103.4 197.4" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M108.9 181.5 Q114.9 181.1 116.2 172.5 Q108.0 175.5 108.9 181.5Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M108.9 181.5 L114.7 174.3" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M108.0 175.0 Q112.0 170.3 106.6 163.1 Q103.0 171.4 108.0 175.0Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M108.0 175.0 L106.9 165.5" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M160 318 C170 262 192 214 196 180" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M168.0 282.3 Q178.2 286.0 186.8 272.7 Q170.9 271.8 168.0 282.3Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M168.0 282.3 L183.0 274.6" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M175.8 255.0 Q178.6 245.7 166.2 239.0 Q166.4 253.1 175.8 255.0Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M175.8 255.0 L168.1 242.2" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M183.7 229.8 Q191.5 233.0 198.5 222.9 Q186.2 221.8 183.7 229.8Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M183.7 229.8 L195.5 224.3" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M190.4 206.8 Q192.2 199.8 182.8 195.1 Q183.3 205.6 190.4 206.8Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M190.4 206.8 L184.3 197.4" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M195.1 186.3 Q200.9 187.8 204.9 180.0 Q196.1 180.4 195.1 186.3Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M195.1 186.3 L202.9 181.3" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M196.0 180.0 Q201.0 176.4 197.5 168.1 Q192.0 175.3 196.0 180.0Z" fill="none" stroke="#E7D4A6" stroke-width="0.8" opacity="0.55"/><path d="M196.0 180.0 L197.2 170.5" stroke="#E7D4A6" stroke-width="0.48" opacity="0.385"/><path d="M64.0 112.0 Q69.6 116.8 80.0 112.0 Q69.6 107.2 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q64.6 119.4 75.3 123.3 Q71.4 112.6 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q59.2 117.6 64.0 128.0 Q68.8 117.6 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q56.6 112.6 52.7 123.3 Q63.4 119.4 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q58.4 107.2 48.0 112.0 Q58.4 116.8 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q63.4 104.6 52.7 100.7 Q56.6 111.4 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q68.8 106.4 64.0 96.0 Q59.2 106.4 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M64.0 112.0 Q71.4 111.4 75.3 100.7 Q64.6 104.6 64.0 112.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><circle cx="64" cy="112" r="3.5" fill="#C6A15B" opacity="0.9"/><path d="M238.0 120.0 Q242.6 123.9 251.0 120.0 Q242.6 116.1 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q238.5 126.0 247.2 129.2 Q244.0 120.5 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q234.1 124.5 238.0 133.0 Q241.9 124.5 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q232.0 120.5 228.8 129.2 Q237.5 126.0 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q233.4 116.1 225.0 120.0 Q233.4 123.9 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q237.5 114.0 228.8 110.8 Q232.0 119.5 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q241.9 115.5 238.0 107.0 Q234.1 115.5 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><path d="M238.0 120.0 Q244.0 119.5 247.2 110.8 Q238.5 114.0 238.0 120.0Z" fill="rgba(231,212,166,0.08)" stroke="#E7D4A6" stroke-width="0.8" opacity="0.9"/><circle cx="238" cy="120" r="2.9" fill="#C6A15B" opacity="0.9"/><g stroke="#C6A15B" stroke-width="1.2" fill="none">
+<path d="M120 236 Q120 218 137 215 L137 204 L163 204 L163 215 Q180 218 180 236 L180 318 Q180 328 170 328 L130 328 Q120 328 120 318 Z" fill="#0F2118"/>
+<path d="M120 236 Q120 218 137 215 L137 204 L163 204 L163 215 Q180 218 180 236 L180 318 Q180 328 170 328 L130 328 Q120 328 120 318 Z" fill="rgba(198,161,91,0.10)"/>
+<rect x="134" y="194" width="32" height="10" rx="2" fill="#0F2118"/>
+<path d="M141 194 L141 180 Q141 162 150 162 Q159 162 159 180 L159 194" fill="#0F2118"/>
+<line x1="144" y1="172" x2="156" y2="172" opacity="0.6"/>
+<line x1="144" y1="178" x2="156" y2="178" opacity="0.6"/>
+<rect x="129" y="250" width="42" height="52" rx="2" stroke="#E7D4A6" stroke-width="0.8"/>
+<line x1="135" y1="292" x2="165" y2="292" stroke="#E7D4A6" stroke-width="0.6" opacity="0.7"/>
+<line x1="139" y1="297" x2="161" y2="297" stroke="#E7D4A6" stroke-width="0.6" opacity="0.5"/>
+<path d="M125 240 Q125 230 132 226" stroke="#E7D4A6" stroke-width="0.8" opacity="0.5"/>
+</g><path d="M150.0 286.0 Q160.1 277.6 150.0 262.0 Q139.9 277.6 150.0 286.0Z" fill="rgba(231,212,166,0.12)" stroke="#E7D4A6" stroke-width="0.8" opacity="1"/><path d="M150.0 286.0 L150.0 266.8" stroke="#E7D4A6" stroke-width="0.48" opacity="0.7"/><path d="M150 286 L150 290" stroke="#E7D4A6" stroke-width="0.8"/><path d="M58 329 L242 329" stroke="#C6A15B" stroke-width="0.8" opacity="0.6"/><circle cx="92" cy="324.5" r="4.5" fill="rgba(231,212,166,0.15)" stroke="#E7D4A6" stroke-width="0.7" opacity="0.9"/><circle cx="102" cy="326" r="3" fill="rgba(231,212,166,0.15)" stroke="#E7D4A6" stroke-width="0.7" opacity="0.7"/><circle cx="204" cy="325" r="4" fill="rgba(231,212,166,0.15)" stroke="#E7D4A6" stroke-width="0.7" opacity="0.85"/><circle cx="214" cy="326.4" r="2.6" fill="rgba(231,212,166,0.15)" stroke="#E7D4A6" stroke-width="0.7" opacity="0.6"/><circle cx="196" cy="326.6" r="2.4" fill="rgba(231,212,166,0.15)" stroke="#E7D4A6" stroke-width="0.7" opacity="0.5"/><circle cx="84" cy="326.8" r="2.2" fill="rgba(231,212,166,0.15)" stroke="#E7D4A6" stroke-width="0.7" opacity="0.5"/><path d="M150 43 L151.25 46.75 L155 48 L151.25 49.25 L150 53 L148.75 49.25 L145 48 L148.75 46.75Z" fill="#E7D4A6" opacity="0.7"/><path d="M98 67 L98.75 69.25 L101 70 L98.75 70.75 L98 73 L97.25 70.75 L95 70 L97.25 69.25Z" fill="#E7D4A6" opacity="0.7"/><path d="M205 74.5 L205.875 77.125 L208.5 78 L205.875 78.875 L205 81.5 L204.125 78.875 L201.5 78 L204.125 77.125Z" fill="#E7D4A6" opacity="0.7"/><path d="M60 187.5 L60.625 189.375 L62.5 190 L60.625 190.625 L60 192.5 L59.375 190.625 L57.5 190 L59.375 189.375Z" fill="#E7D4A6" opacity="0.7"/><path d="M244 197.5 L244.625 199.375 L246.5 200 L244.625 200.625 L244 202.5 L243.375 200.625 L241.5 200 L243.375 199.375Z" fill="#E7D4A6" opacity="0.7"/></svg>
+          <span class="hero-arch-caption">Est. in the pursuit<br>of natural healing</span>
+        </div>
+        <!-- <div class="hero-stat-card">
+          <div class="num">15+</div>
+          <div class="lab">Years of Practice</div>
+        </div> -->
+      </div>
+    </div>
+  </section>
+
+  <div class="strip">
+    <div class="strip-inner">
+      Classical Homeopathy <span>&#10022;</span> Personalised Protocols <span>&#10022;</span> Chronic Care <span>&#10022;</span> Family Wellness <span>&#10022;</span> Classical Homeopathy <span>&#10022;</span> Personalised Protocols <span>&#10022;</span> Chronic Care <span>&#10022;</span> Family Wellness <span>&#10022;</span>
+    </div>
+  </div>
+
+  <!-- PHILOSOPHY -->
+  <section class="philosophy" id="philosophy">
+    <div class="container">
+      <div class="phil-grid">
+        <div class="phil-visual reveal">
+          <svg class="phil-illus" viewBox="30 40 240 300" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="150" cy="150" r="96" fill="rgba(255,255,255,0.35)" stroke="#C6A15B" stroke-width="0.8" opacity="0.8"/><circle cx="150" cy="150" r="84" fill="none" stroke="#C6A15B" stroke-width="0.5" opacity="0.5" stroke-dasharray="1.5 4"/><path d="M128 232 C118 190 96 150 88 100" fill="none" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M119.9 204.4 Q131.4 201.7 131.1 184.5 Q116.3 193.2 119.9 204.4Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M119.9 204.4 L128.9 188.5" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M115.4 191.5 Q111.6 181.2 95.6 183.4 Q105.4 196.2 115.4 191.5Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M115.4 191.5 L99.6 185.1" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M110.7 178.5 Q120.7 175.9 120.0 160.9 Q107.3 168.8 110.7 178.5Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M110.7 178.5 L118.2 164.4" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M105.9 165.3 Q102.6 156.4 88.9 158.3 Q97.3 169.3 105.9 165.3Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M105.9 165.3 L92.3 159.7" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M101.2 151.8 Q109.8 149.8 109.6 137.1 Q98.6 143.5 101.2 151.8Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M101.2 151.8 L108.0 140.0" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M96.9 138.0 Q94.5 130.3 82.9 131.3 Q89.4 140.9 96.9 138.0Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M96.9 138.0 L85.7 132.6" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M92.9 123.7 Q100.1 122.6 100.8 112.1 Q91.2 116.6 92.9 123.7Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M92.9 123.7 L99.2 114.4" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M89.6 108.9 Q88.3 102.5 78.8 102.4 Q83.4 110.7 89.6 108.9Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M89.6 108.9 L81.0 103.7" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M88.0 100.0 Q92.1 94.7 85.9 87.2 Q82.4 96.3 88.0 100.0Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M88.0 100.0 L86.3 89.7" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M146 232 C146 180 140 130 146 78" fill="none" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M145.3 197.9 Q156.2 198.6 160.5 183.3 Q145.1 187.0 145.3 197.9Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M145.3 197.9 L157.5 186.2" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M144.7 182.1 Q144.2 171.9 129.6 169.5 Q134.6 183.5 144.7 182.1Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M144.7 182.1 L132.6 172.0" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M144.1 166.4 Q153.6 166.9 157.3 153.6 Q143.9 156.9 144.1 166.4Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M144.1 166.4 L154.7 156.1" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M143.6 150.6 Q143.3 141.8 130.7 139.6 Q134.9 151.7 143.6 150.6Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M143.6 150.6 L133.3 141.8" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M143.4 134.9 Q151.4 135.6 154.9 124.3 Q143.4 126.8 143.4 134.9Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M143.4 134.9 L152.6 126.4" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M143.4 119.1 Q143.5 111.7 133.0 109.3 Q136.1 119.7 143.4 119.1Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M143.4 119.1 L135.1 111.3" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M143.9 103.3 Q150.6 104.2 154.0 95.1 Q144.4 96.6 143.9 103.3Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M143.9 103.3 L152.0 96.7" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M145.0 87.3 Q145.5 81.4 137.2 78.8 Q139.1 87.4 145.0 87.3Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M145.0 87.3 L138.7 80.5" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M146.0 78.0 Q151.0 74.3 147.3 66.1 Q141.9 73.3 146.0 78.0Z" fill="rgba(39,69,54,0.10)" stroke="#274536" stroke-width="0.9" opacity="0.85"/><path d="M146.0 78.0 L147.1 68.5" stroke="#274536" stroke-width="0.54" opacity="0.595"/><path d="M136 232 C124 200 110 180 108 150" fill="none" stroke="#274536" stroke-width="0.7" opacity="0.6"/><path d="M127.9 212.4 Q135.7 209.8 134.4 198.0 Q124.7 204.9 127.9 212.4Z" fill="none" stroke="#274536" stroke-width="0.7" opacity="0.6"/><path d="M127.9 212.4 L133.1 200.8" stroke="#274536" stroke-width="0.42" opacity="0.42"/><path d="M119.5 193.3 Q116.8 186.9 106.8 188.9 Q113.4 196.6 119.5 193.3Z" fill="none" stroke="#274536" stroke-width="0.7" opacity="0.6"/><path d="M119.5 193.3 L109.4 189.8" stroke="#274536" stroke-width="0.42" opacity="0.42"/><path d="M112.7 174.9 Q118.3 173.8 118.4 165.4 Q111.1 169.4 112.7 174.9Z" fill="none" stroke="#274536" stroke-width="0.7" opacity="0.6"/><path d="M112.7 174.9 L117.2 167.3" stroke="#274536" stroke-width="0.42" opacity="0.42"/><path d="M108.5 155.3 Q107.9 150.8 101.4 150.2 Q104.1 156.2 108.5 155.3Z" fill="none" stroke="#274536" stroke-width="0.7" opacity="0.6"/><path d="M108.5 155.3 L102.8 151.3" stroke="#274536" stroke-width="0.42" opacity="0.42"/><path d="M108.0 150.0 Q111.2 146.6 107.4 141.0 Q104.4 147.1 108.0 150.0Z" fill="none" stroke="#274536" stroke-width="0.7" opacity="0.6"/><path d="M108.0 150.0 L107.5 142.8" stroke="#274536" stroke-width="0.42" opacity="0.42"/><path d="M88.0 96.0 Q93.2 100.5 103.0 96.0 Q93.2 91.5 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q89.6 102.7 100.1 104.8 Q94.9 95.4 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q85.3 102.4 92.6 110.3 Q93.9 99.6 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q82.1 99.6 83.4 110.3 Q90.7 102.4 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q81.1 95.4 75.9 104.8 Q86.4 102.7 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q82.8 91.5 73.0 96.0 Q82.8 100.5 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q86.4 89.3 75.9 87.2 Q81.1 96.6 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q90.7 89.6 83.4 81.7 Q82.1 92.4 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q93.9 92.4 92.6 81.7 Q85.3 89.6 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M88.0 96.0 Q94.9 96.6 100.1 87.2 Q89.6 89.3 88.0 96.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><circle cx="88" cy="96" r="3.3" fill="#C6A15B" opacity="1"/><path d="M146.0 72.0 Q149.8 75.3 157.0 72.0 Q149.8 68.7 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q147.2 76.9 154.9 78.5 Q151.1 71.6 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q144.1 76.7 149.4 82.5 Q150.3 74.6 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q141.7 74.6 142.6 82.5 Q147.9 76.7 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q140.9 71.6 137.1 78.5 Q144.8 76.9 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q142.2 68.7 135.0 72.0 Q142.2 75.3 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q144.8 67.1 137.1 65.5 Q140.9 72.4 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q147.9 67.3 142.6 61.5 Q141.7 69.4 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q150.3 69.4 149.4 61.5 Q144.1 67.3 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><path d="M146.0 72.0 Q151.1 72.4 154.9 65.5 Q147.2 67.1 146.0 72.0Z" fill="rgba(198,161,91,0.22)" stroke="#C6A15B" stroke-width="0.9" opacity="1"/><circle cx="146" cy="72" r="2.4" fill="#C6A15B" opacity="1"/><path d="M198.0 104.0 Q201.2 106.7 207.0 104.0 Q201.2 101.3 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q198.3 108.1 204.4 110.4 Q202.1 104.3 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q195.3 107.2 198.0 113.0 Q200.7 107.2 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q193.9 104.3 191.6 110.4 Q197.7 108.1 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q194.8 101.3 189.0 104.0 Q194.8 106.7 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q197.7 99.9 191.6 97.6 Q193.9 103.7 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q200.7 100.8 198.0 95.0 Q195.3 100.8 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><path d="M198.0 104.0 Q202.1 103.7 204.4 97.6 Q198.3 99.9 198.0 104.0Z" fill="rgba(198,161,91,0.18)" stroke="#C6A15B" stroke-width="0.8" opacity="0.9"/><circle cx="198" cy="104" r="2.0" fill="#C6A15B" opacity="0.9"/><path d="M198 113 C196 150 180 190 170 232" fill="none" stroke="#274536" stroke-width="0.8" opacity="0.7"/><path d="M190.0 160.0 Q198.9 162.8 205.6 151.0 Q192.0 150.9 190.0 160.0Z" fill="rgba(39,69,54,0.08)" stroke="#274536" stroke-width="0.7" opacity="0.7"/><path d="M190.0 160.0 L202.5 152.8" stroke="#274536" stroke-width="0.42" opacity="0.48999999999999994"/><g transform="rotate(32 196 205)"><rect x="188" y="140" width="16" height="96" rx="8" fill="#F3EFE3" stroke="#0F2118" stroke-width="1.1"/><ellipse cx="196" cy="146" rx="5" ry="2" fill="none" stroke="#0F2118" stroke-width="0.6" opacity="0.5"/></g><g stroke="#0F2118" stroke-width="1.2">
+<path d="M84 232 L216 232 Q213 292 150 302 Q87 292 84 232 Z" fill="#F3EFE3"/>
+<ellipse cx="150" cy="232" rx="66" ry="8" fill="#E9E4D3"/>
+<path d="M126 300 L120 318 L180 318 L174 300" fill="#F3EFE3"/>
+<path d="M100 252 Q150 262 200 252" fill="none" stroke="#C6A15B" stroke-width="0.9"/>
+<path d="M104 262 Q150 272 196 262" fill="none" stroke="#C6A15B" stroke-width="0.5" opacity="0.7"/>
+</g><path d="M60 319 L240 319" stroke="#0F2118" stroke-width="0.8" opacity="0.5"/><circle cx="82" cy="314.5" r="4.5" fill="rgba(198,161,91,0.25)" stroke="#C6A15B" stroke-width="0.8" opacity="0.8"/><circle cx="92" cy="316" r="3" fill="rgba(198,161,91,0.25)" stroke="#C6A15B" stroke-width="0.8" opacity="0.6"/><circle cx="218" cy="315" r="4" fill="rgba(198,161,91,0.25)" stroke="#C6A15B" stroke-width="0.8" opacity="0.8"/><circle cx="228" cy="316.4" r="2.6" fill="rgba(198,161,91,0.25)" stroke="#C6A15B" stroke-width="0.8" opacity="0.6"/><circle cx="74" cy="316.6" r="2.4" fill="rgba(198,161,91,0.25)" stroke="#C6A15B" stroke-width="0.8" opacity="0.5"/><path d="M214 58 L215.0 61.0 L218 62 L215.0 63.0 L214 66 L213.0 63.0 L210 62 L213.0 61.0Z" fill="#C6A15B"/><path d="M74 157 L74.75 159.25 L77 160 L74.75 160.75 L74 163 L73.25 160.75 L71 160 L73.25 159.25Z" fill="#C6A15B"/><path d="M232 177.5 L232.625 179.375 L234.5 180 L232.625 180.625 L232 182.5 L231.375 180.625 L229.5 180 L231.375 179.375Z" fill="#C6A15B"/></svg>
+        </div>
+        <div class="phil-text reveal">
+          <span class="eyebrow">Our Philosophy</span>
+          <h2>Healing that listens<br>before it treats</h2>
+          <p>At Hayat, every consultation begins with a conversation, not a checklist. We believe true wellness comes from understanding the person behind the condition — their history, temperament, and rhythm of life.</p>
+          <p>Our remedies are drawn from classical homeopathic principles, prepared with care and prescribed with patience, guiding the body's own intelligence back toward balance.</p>
+          <ul class="phil-list">
+            <li><span class="mark">&#10022;</span> Individualised case-taking for every patient</li>
+            <li><span class="mark">&#10022;</span> Remedies sourced from trusted, licensed pharmacies</li>
+            <li><span class="mark">&#10022;</span> Ongoing follow-up built into every protocol</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOCTOR -->
+  <section class="doctor" id="doctor">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Under the Care Of</span>
+        <h2>Meet Your Physician</h2>
+      </div>
+      <div class="doctor-grid">
+        <div class="doctor-photo reveal">
+          <img src="assets/doctor.jpeg" alt="Dr. [Name]">
+          <!-- <div class="placeholder-mark">
+            <svg viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="50" cy="36" r="18" stroke="currentColor" stroke-width="1.4"/>
+              <path d="M16 90C16 65 30 54 50 54C70 54 84 65 84 90" stroke="currentColor" stroke-width="1.4"/>
+            </svg>
+            <span>Photo Coming Soon</span>
+          </div> -->
+        </div>
+        <div class="doctor-copy reveal">
+          <h3>Dr. Aneesa Moideen</h3>
+          <span class="role">Consultant Classical Homeopath</span>
+          <p>Dr. Aneesa Moideen combines rigorous clinical training with a deeply attentive, personalised approach — treating chronic and acute conditions across all ages.</p>
+          <p>Every case is studied individually, drawing on detailed history-taking and continuous follow-up to guide each patient toward lasting balance.</p>
+          <!-- <div class="cred-row">
+            <div><div class="num">15+</div><div class="lab">Years Experience</div></div>
+            <div><div class="num">4,000+</div><div class="lab">Patients Guided</div></div>
+            <div><div class="num">98%</div><div class="lab">Return Consultations</div></div>
+          </div> -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SERVICES -->
+  <section class="services" id="services">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Areas of Care</span>
+        <h2>Treatment, Tailored to You</h2>
+        <p>A considered range of homeopathic care, from first consultation to long-term chronic management.</p>
+      </div>
+      <div class="services-grid reveal">
+        <div class="service-card">
+          <svg class="si" viewBox="0 0 46 46" fill="none"><path d="M23 6C29 14 38 17 40 23C38 29 29 32 23 40C17 32 6 29 4 23C6 17 17 14 23 6Z" stroke="#C6A15B" stroke-width="1.2"/></svg>
+          <h3>Chronic Conditions</h3>
+          <p>Long-term, root-cause management for allergies, skin, digestive, and autoimmune conditions.</p>
+        </div>
+        <div class="service-card">
+          <svg class="si" viewBox="0 0 46 46" fill="none"><circle cx="23" cy="23" r="17" stroke="#C6A15B" stroke-width="1.2"/><path d="M23 12v11l8 5" stroke="#C6A15B" stroke-width="1.2"/></svg>
+          <h3>Acute & First-Aid</h3>
+          <p>Prompt, gentle relief for fevers, infections, injuries and everyday ailments.</p>
+        </div>
+        <div class="service-card">
+          <svg class="si" viewBox="0 0 46 46" fill="none"><path d="M12 30c0-10 5-18 11-22 6 4 11 12 11 22-3 4-8 6-11 6s-8-2-11-6Z" stroke="#C6A15B" stroke-width="1.2"/></svg>
+          <h3>Women's Wellness</h3>
+          <p>Hormonal balance, fertility support, and care through every life stage.</p>
+        </div>
+        <div class="service-card">
+          <svg class="si" viewBox="0 0 46 46" fill="none"><path d="M23 8c8 0 13 6 13 13 0 9-13 17-13 17S10 30 10 21c0-7 5-13 13-13Z" stroke="#C6A15B" stroke-width="1.2"/></svg>
+          <h3>Paediatric Care</h3>
+          <p>Safe, gentle remedies suited to children's growth, immunity and behaviour.</p>
+        </div>
+        <div class="service-card">
+          <svg class="si" viewBox="0 0 46 46" fill="none"><path d="M8 23c5-8 12-13 15-13s10 5 15 13c-5 8-12 13-15 13S13 31 8 23Z" stroke="#C6A15B" stroke-width="1.2"/><circle cx="23" cy="23" r="4" stroke="#C6A15B" stroke-width="1.2"/></svg>
+          <h3>Mind & Stress</h3>
+          <p>Support for anxiety, sleep, and emotional wellbeing through constitutional care.</p>
+        </div>
+        <div class="service-card">
+          <svg class="si" viewBox="0 0 46 46" fill="none"><path d="M23 6v34M8 23h30" stroke="#C6A15B" stroke-width="1.2"/><circle cx="23" cy="23" r="15" stroke="#C6A15B" stroke-width="1.2"/></svg>
+          <h3>Follow-Up Care</h3>
+          <p>Structured review sessions to refine and track your ongoing protocol.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- LOCATION -->
+  <section class="location" id="location">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Visit Us</span>
+        <h2>Find the Clinic</h2>
+        <p>Walk in for a consultation or reserve your appointment ahead of time.</p>
+      </div>
+      <div class="loc-grid reveal">
+        <div class="loc-info">
+          <h3>Hayat Homoeo Clinic</h3>
+          <div class="loc-item">
+            <div class="lab">Address</div>
+            <div class="val">Allapra P.O, Perumbavoor, Pin:683556</div>
+          </div>
+          <div class="loc-item">
+            <div class="lab">Hours</div>
+            <div class="val">Mon – Sat, 10:00 AM – 7:00 PM</div>
+          </div>
+          <div class="loc-item">
+            <div class="lab">Phone</div>
+            <div class="val">+91 9020124345</div>
+          </div>
+          <div class="loc-item">
+            <div class="lab">Email</div>
+            <div class="val">hayathomoeoclinicbydraneesamoi@gmail.com</div>
+          </div>
+          <a href="https://maps.app.goo.gl/hrahHVZdAUUysSVr8" target="_blank" rel="noopener noreferrer" class="btn-text" style="margin-top:10px; color:var(--gold-light); border-color:var(--gold);">Get Directions</a>
+        </div>
+        <!-- Embedded map centred on Hayat Homoeo Clinic, Perumbavoor (10.102685, 76.471107) -->
+        <iframe class="map-embed" loading="lazy" allowfullscreen title="Map to Hayat Homoeo Clinic"
+          src="https://www.google.com/maps?q=10.102685,76.471107&z=17&hl=en&output=embed">
+        </iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-banner">
+    <div class="container">
+      <h2>Begin your journey to lasting wellness</h2>
+      <p>Book a consultation with Hayat and experience homeopathy the way it was meant to feel — unhurried, personal, and precise.</p>
+      <a href="#location" class="btn-primary" style="background:var(--gold); border-color:var(--gold); color:var(--ink);">Book Consultation</a>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="container">
+    <div class="foot-grid">
+      <div>
+        <div class="foot-logo">
+          <img src="assets/hayath-icon-round.png" alt="Hayat emblem">
+          <span class="foot-logo-word">Hayat<small>Homoeo Clinic</small></span>
+        </div>
+        <p>A homoeo clinic devoted to gentle, individualised, and lasting care for every stage of life.</p>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="#philosophy">Philosophy</a></li>
+          <li><a href="#doctor">Physician</a></li>
+          <li><a href="#services">Care</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Clinic</h4>
+        <ul>
+          <li><a href="#location">Visit Us</a></li>
+          <li><a href="#top">Book Now</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li><a href="tel:+000000000">+91 9020124345</a></li>
+          <li><a href="mailto:hayathomoeoclinicbydraneesamoi@gmail.com">hayathomoeoclinicbydraneesamoi@gmail.com</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>&copy; 2026 Hayat Homoeo Clinic. All rights reserved.</span>
+      <span>Crafted with care.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  // mobile nav toggle
+  const toggle = document.querySelector('.nav-toggle');
+  const navUl = document.querySelector('nav ul');
+  toggle.addEventListener('click', () => {
+    const open = navUl.style.display === 'flex';
+    navUl.style.display = open ? 'none' : 'flex';
+    navUl.style.flexDirection = 'column';
+    navUl.style.position = 'absolute';
+    navUl.style.top = '70px';
+    navUl.style.right = '32px';
+    navUl.style.background = '#F6F1E6';
+    navUl.style.padding = '20px 26px';
+    navUl.style.border = '1px solid rgba(198,161,91,0.35)';
+    navUl.style.borderRadius = '4px';
+    navUl.style.gap = '18px';
+  });
+
+  // scroll reveal
+  const revealEls = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.15 });
+  revealEls.forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
